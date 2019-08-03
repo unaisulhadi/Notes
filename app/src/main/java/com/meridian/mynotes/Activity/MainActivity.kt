@@ -137,6 +137,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        Log.d("TEST","TEST")
+
         delete_btn.setOnClickListener {
             for( i in 0..taskList.lastIndex){
                 for(j in 0..selectedTaskList.lastIndex){
