@@ -5,4 +5,18 @@
     <color name="colorAccent">#3c3485</color>
     <color name="app_primary_pressed">#58519f</color>
     <color name="app_ripple">#8c8cb7</color>
+    <color name="search_dark">#454C52</color>
+    <color name="search_dark_hint">#2C3539</color>
+    <color name="dark_bg">#2C3539</color>
+    <color name="dark_header">#D9D9D9</color>
+    <color name="dark_rv_title">#B6BDC3</color>
+    <color name="dark_rv_note">#2C3539</color>
+
+    <color name="dark_text_hint">#80B6BDC3</color>
+    <color name="add_layout_dark">#2C3539</color>
+
+    <color name="main_layout_bg">#FBFBFB</color>
+    <color name="text_color_hint">#8D000000</color>
+
+
 </resources>

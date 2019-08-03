@@ -6,7 +6,7 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FBFBFB"
+    android:background="@color/main_layout_bg"
     tools:context=".Activity.MainActivity">
 
 
@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_32sdp">
             <TextView
+                android:id="@+id/title_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ps_bold"
@@ -31,6 +32,13 @@
                 android:layout_centerVertical="true"
                 android:textColor="@color/md_blue_grey_800"
                 android:textSize="@dimen/_22sdp" />
+
+            <Button
+                android:id="@+id/switch_dark"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:text="DARK"
+                android:layout_toRightOf="@id/title_header"/>
 
             <ImageView
                 android:id="@+id/delete_btn"
@@ -46,6 +54,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/search_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:background="@drawable/search_et_bg"
@@ -58,6 +67,7 @@
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/ps_regular"
+                android:textColorHint="@color/md_grey_500"
                 android:hint="Search"
                 android:layout_toStartOf="@id/btn_search"
                 android:inputType="textCapSentences"
@@ -121,7 +131,7 @@
             android:background="@android:color/transparent"
             android:fontFamily="@font/ps_regular"
             android:textColor="@color/md_black_1000"
-            android:textColorHint="#8D000000"
+            android:textColorHint="@color/text_color_hint"
             android:hint="Title"
             android:inputType="textCapSentences"
             android:textSize="@dimen/_14sdp" />
@@ -135,7 +145,7 @@
             android:layout_marginBottom="@dimen/_5sdp"
             android:background="@android:color/transparent"
             android:textColor="@color/md_black_1000"
-            android:textColorHint="#8D000000"
+            android:textColorHint="@color/text_color_hint"
             android:fontFamily="@font/ps_regular"
             android:gravity="start"
             android:hint="Note"
