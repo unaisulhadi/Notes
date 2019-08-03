@@ -141,7 +141,7 @@
             android:hint="Note"
             android:layout_below="@id/edt_item_title"
             android:paddingTop="@dimen/_2sdp"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_13sdp" />
 
         <LinearLayout
             android:id="@+id/btn_add_note_ll"

@@ -1,6 +1,5 @@
 package com.meridian.mynotes.Activity
 
-import android.annotation.SuppressLint
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,10 +7,6 @@ import android.view.animation.AnimationUtils
 
 import kotlinx.android.synthetic.main.activity_main.*
 import android.app.Activity
-import android.app.PendingIntent.getActivity
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.AsyncTask
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -23,11 +18,8 @@ import android.widget.Toast
 import com.meridian.mynotes.Components.DatabaseClient
 import com.meridian.mynotes.Components.Task
 import com.meridian.mynotes.R
-import com.meridian.mynotes.Utils.Const.mID
 import com.meridian.mynotes.Utils.RecyclerItemClickListener
 import com.meridian.mynotes.Utils.TaskAdapter
-import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.task_item.*
 import kotlinx.android.synthetic.main.task_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,7 +28,6 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
-    val item = mID
     lateinit var rotate_cw: Animation
     lateinit var slide_up :Animation
     lateinit var slide_down:Animation
@@ -52,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         val sdf = SimpleDateFormat("dd-MM-yyyy")
         val currentDate = sdf.format(Date())
-        Log.d("CURRENT_DATE",currentDate)
+        Log.d("CURRENT_DATE", currentDate)
 
 
         rv_tasks.setHasFixedSize(true)
@@ -62,56 +53,64 @@ class MainActivity : AppCompatActivity() {
         rotate_cw = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
         slide_up = AnimationUtils.loadAnimation(this, R.anim.slide_up)
         slide_down = AnimationUtils.loadAnimation(this, R.anim.slide_down)
-        fade_in=AnimationUtils.loadAnimation(this, R.anim.fade_in)
-        fade_out=AnimationUtils.loadAnimation(this, R.anim.fade_out)
+        fade_in = AnimationUtils.loadAnimation(this, R.anim.fade_in)
+        fade_out = AnimationUtils.loadAnimation(this, R.anim.fade_out)
 
 
 
-        selectedTaskList= ArrayList()
+        selectedTaskList = ArrayList()
 
 
         swapAddDelete(selectedTaskList.size)
         rv_tasks.addOnItemTouchListener(RecyclerItemClickListener(applicationContext, rv_tasks, object : RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
-                if(selectedTaskList.size >0){
+                if (selectedTaskList.size > 0) {
                     swapAddDelete(selectedTaskList.size)
-                    if(!selectedTaskList.contains(taskList.get(position))){
-                        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.md_grey_500))
+                    if (!selectedTaskList.contains(taskList.get(position))) {
+                        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_400))
                         selectedTaskList.add(taskList.get(position))
                         swapAddDelete(selectedTaskList.size)
-                    }else{
-                        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.md_grey_200))
+                    } else {
+                        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200))
                         selectedTaskList.remove(taskList.get(position))
                         swapAddDelete(selectedTaskList.size)
                     }
-                    Toast.makeText(applicationContext,"SELECTED=="+selectedTaskList.toString(),Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(applicationContext,"SELECTED=="+selectedTaskList.toString(),Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onItemLongClick(view: View, position: Int) {
 
-                if(!selectedTaskList.contains(taskList.get(position))){
-                    view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext,R.color.md_grey_500))
+                if (!selectedTaskList.contains(taskList.get(position))) {
+                    view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_400))
                     selectedTaskList.add(taskList.get(position))
                     swapAddDelete(selectedTaskList.size)
                 }
-                Toast.makeText(applicationContext,"SELECTED=="+selectedTaskList.toString(),Toast.LENGTH_SHORT).show()
+//                Toast.makeText(applicationContext,"SELECTED=="+selectedTaskList.toString(),Toast.LENGTH_SHORT).show()
             }
         }))
 
 
+        home_layout.setOnClickListener {
+            btn_add_layout.visibility = View.GONE
+            home_layout.visibility = View.GONE
+            home_layout.startAnimation(fade_out)
+            btn_add_layout.startAnimation(slide_down)
+            hideKeyboard(this)
+//            getTasks()
+        }
 
         fab_add.setOnClickListener {
             fab_add.startAnimation(rotate_cw)
             selectedTaskList.clear()
             if (btn_add_layout.visibility == View.GONE) {
                 btn_add_layout.visibility = View.VISIBLE
-                home_layout.visibility= View.VISIBLE
+                home_layout.visibility = View.VISIBLE
                 home_layout.startAnimation(fade_in)
                 btn_add_layout.startAnimation(slide_up)
             } else {
                 btn_add_layout.visibility = View.GONE
-                home_layout.visibility= View.GONE
+                home_layout.visibility = View.GONE
                 home_layout.startAnimation(fade_out)
                 btn_add_layout.startAnimation(slide_down)
                 hideKeyboard(this)
@@ -122,7 +121,7 @@ class MainActivity : AppCompatActivity() {
 
         btn_cancel_note.setOnClickListener {
             btn_add_layout.visibility = View.GONE
-            home_layout.visibility= View.GONE
+            home_layout.visibility = View.GONE
             home_layout.startAnimation(fade_out)
             btn_add_layout.startAnimation(slide_down)
             hideKeyboard(this)
@@ -131,21 +130,25 @@ class MainActivity : AppCompatActivity() {
         btn_add_note.setOnClickListener {
             val title = edt_item_title.text.toString().trim()
             val note = edt_item_note.text.toString().trim()
-            if(TextUtils.isEmpty(title)){
-                Toast.makeText(applicationContext,"Please enter title",Toast.LENGTH_SHORT).show()
-            }else{
-                addNote(title,note,currentDate)
+            if (TextUtils.isEmpty(title)) {
+                Toast.makeText(applicationContext, "Please enter title", Toast.LENGTH_SHORT).show()
+            } else {
+                addNote(title, note, currentDate)
             }
         }
 
         delete_btn.setOnClickListener {
-            Toast.makeText(applicationContext,"DELETE",Toast.LENGTH_SHORT).show()
-
+            for( i in 0..taskList.lastIndex){
+                for(j in 0..selectedTaskList.lastIndex){
+                    if(taskList.get(i)==selectedTaskList.get(j)){
+                        deleteNote(taskList.get(i))
+                    }
+                }
+            }
         }
     }
 
     fun swapAddDelete(size:Int){
-        Toast.makeText(applicationContext,"SIZE Toast",Toast.LENGTH_SHORT).show()
         if(size > 0){
             disable()
             delete_btn.visibility = View.VISIBLE
@@ -157,12 +160,12 @@ class MainActivity : AppCompatActivity() {
 
     fun disable(){
         fab_add.isEnabled=false
-        fab_add.visibility = View.GONE
+        fab_add.hide()
     }
 
     fun enable(){
         fab_add.isEnabled=true
-        fab_add.visibility = View.VISIBLE
+        fab_add.show()
     }
 
 
@@ -210,12 +213,14 @@ class MainActivity : AppCompatActivity() {
             override fun onPostExecute(result: Void?) {
                  super.onPostExecute(result);
                 Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_LONG).show();
-                finish();
+                selectedTaskList.clear()
+                swapAddDelete(selectedTaskList.size)
+                getTasks()
             }
         }
 
-        val save = SaveTask()
-        save.execute();
+        val delete = DeleteTask()
+        delete.execute();
     }
 
     private fun getTasks() {
