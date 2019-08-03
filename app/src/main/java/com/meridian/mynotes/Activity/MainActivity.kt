@@ -145,6 +145,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun swapAddDelete(size:Int){
+        Toast.makeText(applicationContext,"SIZE Toast",Toast.LENGTH_SHORT).show()
         if(size > 0){
             disable()
             delete_btn.visibility = View.VISIBLE
