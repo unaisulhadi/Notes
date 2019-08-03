@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3c3485</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#3c3485</color>
+    <color name="app_primary_pressed">#58519f</color>
+    <color name="app_ripple">#8c8cb7</color>
+</resources>

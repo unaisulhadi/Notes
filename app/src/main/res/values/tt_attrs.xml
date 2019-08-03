@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomTextView">
+        <attr name="tvTypeface" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomEditTextView">
+        <attr name="etTypeface" format="string"/>
+    </declare-styleable>
+</resources>

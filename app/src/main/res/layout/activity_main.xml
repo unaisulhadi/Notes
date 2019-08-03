@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FBFBFB"
+    tools:context=".Activity.MainActivity">
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_15sdp"
+        android:paddingTop="@dimen/_18sdp"
+        android:paddingHorizontal="@dimen/_10sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_32sdp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ps_bold"
+                android:text="Notes"
+                android:layout_centerVertical="true"
+                android:textColor="@color/md_blue_grey_800"
+                android:textSize="@dimen/_22sdp" />
+
+            <ImageView
+                android:id="@+id/delete_btn"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/_6sdp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_rubbish_bin"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/search_et_bg"
+            android:layout_marginVertical="@dimen/_8sdp"
+            android:paddingHorizontal="@dimen/_5sdp">
+
+            <EditText android:id="@+id/edt_search_note"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/ps_regular"
+                android:hint="Search"
+                android:layout_toStartOf="@id/btn_search"
+                android:inputType="textCapSentences"
+                android:textSize="@dimen/_14sdp" />
+
+            <ImageView android:id="@+id/btn_search"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_search" />
+
+        </RelativeLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"/>
+
+
+    </LinearLayout>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/md_grey_500"
+        android:src="@drawable/ic_add_black_24dp" />
+
+    <View
+        android:id="@+id/home_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#66000000"
+        android:visibility="gone"
+        />
+
+    <RelativeLayout
+        android:id="@+id/btn_add_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_200sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/add_note_layout"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <EditText android:id="@+id/edt_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/ps_regular"
+            android:textColor="@color/md_black_1000"
+            android:textColorHint="#8D000000"
+            android:hint="Title"
+            android:inputType="textCapSentences"
+            android:textSize="@dimen/_14sdp" />
+
+        <EditText android:id="@+id/edt_item_note"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/btn_add_note_ll"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@android:color/transparent"
+            android:textColor="@color/md_black_1000"
+            android:textColorHint="#8D000000"
+            android:fontFamily="@font/ps_regular"
+            android:gravity="start"
+            android:hint="Note"
+            android:layout_below="@id/edt_item_title"
+            android:paddingTop="@dimen/_2sdp"
+            android:textSize="@dimen/_15sdp" />
+
+        <LinearLayout
+            android:id="@+id/btn_add_note_ll"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:orientation="horizontal">
+            <Button android:id="@+id/btn_cancel_note"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_weight="1"
+                android:textColor="@color/md_black_1000"
+                android:background="@android:color/transparent"
+                android:text="Cancel"
+                style="?android:attr/borderlessButtonStyle"/>
+
+            <Button android:id="@+id/btn_add_note"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_weight="1"
+                android:textColor="@color/md_black_1000"
+                android:background="@android:color/transparent"
+                android:text="Add Note"
+                style="?android:attr/borderlessButtonStyle"/>
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
