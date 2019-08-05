@@ -55,7 +55,7 @@
                     android:padding="@dimen/_6sdp"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:src="@drawable/ic_share"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
 
 
                 <ImageView
@@ -65,7 +65,7 @@
                     android:padding="@dimen/_6sdp"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:src="@drawable/ic_pencil_outline"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
 
 
                 <ImageView
@@ -74,7 +74,7 @@
                     android:layout_height="@dimen/_30sdp"
                     android:padding="@dimen/_6sdp"
                     android:src="@drawable/ic_rubbish_bin"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
             </LinearLayout>
 
 

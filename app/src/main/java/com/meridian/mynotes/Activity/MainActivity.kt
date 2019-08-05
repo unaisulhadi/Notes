@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
                     }
 //                    Toast.makeText(applicationContext,"SELECTED=="+selectedTaskList.toString(),Toast.LENGTH_SHORT).show()
                 }else{
-                    hideSelectedColor(view)
+//                    hideSelectedColor(view)
                     val task = taskList.get(position)
                     fab_add.hide()
                     home_layout.visibility = View.VISIBLE
@@ -184,6 +184,7 @@ class MainActivity : AppCompatActivity() {
                 selectedTaskList.clear()
                 delete_btn.visibility=View.GONE
                 update_btn.visibility=View.GONE
+                share_btn.visibility=View.GONE
                 fab_add.hide()
                 adapter.getFilter().filter(s)
                 if(s.length==0){
@@ -236,6 +237,7 @@ class MainActivity : AppCompatActivity() {
                 hideKeyboard(this)
                 delete_btn.visibility = View.GONE
                 update_btn.visibility = View.GONE
+                share_btn.visibility=View.GONE
                 selectedTaskList.clear()
                 fab_add.show()
                 home_layout.visibility = View.GONE
@@ -315,8 +317,27 @@ class MainActivity : AppCompatActivity() {
                 btn_edit_layout.startAnimation(slide_up)
             }
         }
+
+
+        share_btn.setOnClickListener {
+            shareNote(selectedTaskList.get(0))
+            delete_btn.visibility = View.GONE
+            update_btn.visibility = View.GONE
+            share_btn.visibility=View.GONE
+            selectedTaskList.clear()
+            fab_add.show()
+
+        }
     }
 
+    fun shareNote(task:Task){
+        val share = Intent(Intent.ACTION_SEND)
+        share.type="text/plain"
+        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        share.putExtra(Intent.EXTRA_SUBJECT,task.title)
+        share.putExtra(Intent.EXTRA_TEXT,task.note)
+        startActivity(Intent.createChooser(share,"Send note via"))
+    }
 
     fun hideSelectedColor(view:View){
         if(mode=="Light"){
@@ -352,6 +373,7 @@ class MainActivity : AppCompatActivity() {
             selectedTaskList.clear()
             delete_btn.visibility=View.GONE
             update_btn.visibility= View.GONE
+            share_btn.visibility= View.GONE
             fab_add.show()
             getTasks()
         }else{
@@ -370,6 +392,7 @@ class MainActivity : AppCompatActivity() {
             edit_item_note.setText("")
             update_btn.visibility=View.GONE
             delete_btn.visibility=View.GONE
+            share_btn.visibility=View.GONE
             fab_add.show()
             hideKeyboard(this)
         }
@@ -415,8 +438,10 @@ class MainActivity : AppCompatActivity() {
         if (size > 0) {
             if (selectedTaskList.size == 1) {
                 update_btn.visibility = View.VISIBLE
+                share_btn.visibility=View.VISIBLE
             } else {
                 update_btn.visibility = View.GONE
+                share_btn.visibility=View.GONE
             }
             disable()
             delete_btn.visibility = View.VISIBLE
@@ -424,6 +449,7 @@ class MainActivity : AppCompatActivity() {
             enable()
             update_btn.visibility = View.GONE
             delete_btn.visibility = View.GONE
+            share_btn.visibility=View.GONE
         }
     }
 
