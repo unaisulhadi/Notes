@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var taskList: List<Task>
     lateinit var selectedTaskList: ArrayList<Task>
     lateinit var adapter: TaskAdapter
+    lateinit var currentDate: String
 
     companion object Mode {
         internal var mode = "Light"
@@ -54,14 +55,14 @@ class MainActivity : AppCompatActivity() {
 
 //
         val sdf = SimpleDateFormat("dd-MM-yyyy")
-        val currentDate = sdf.format(Date())
+        currentDate = sdf.format(Date())
         Log.d("CURRENT_DATE", currentDate)
 
         val resId = R.anim.layout_animation_fall_down;
         val animation = AnimationUtils.loadLayoutAnimation(applicationContext, resId)
         rv_tasks.setHasFixedSize(true)
         rv_tasks.layoutManager = LinearLayoutManager(this)
-        rv_tasks.layoutAnimation=animation
+//        rv_tasks.layoutAnimation=animation
         getTasks();
 
         rotate_cw = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
@@ -70,15 +71,7 @@ class MainActivity : AppCompatActivity() {
         fade_in = AnimationUtils.loadAnimation(this, R.anim.fade_in)
         fade_out = AnimationUtils.loadAnimation(this, R.anim.fade_out)
 
-        switch_dark.setOnClickListener {
-            if (mode == "Light") {
-                darkMode()
-                getTasks()
-            } else {
-                lightMode()
-                getTasks()
-            }
-        }
+
 
 
         selectedTaskList = ArrayList()
@@ -89,6 +82,7 @@ class MainActivity : AppCompatActivity() {
             override fun onItemClick(view: View, position: Int) {
                 if (selectedTaskList.size > 0) {
                     swapAddDelete(selectedTaskList.size)
+
                     if (!selectedTaskList.contains(taskList.get(position))) {
                         if (mode == "Light") {
                             view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_400))
@@ -141,13 +135,38 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        edit_add_note.setOnClickListener {
 
-        home_layout.setOnClickListener {
-            btn_add_layout.visibility = View.GONE
+            val task = selectedTaskList.get(0)
+
+
+
+            //            updateTask(selectedTaskList.get(0))
+            if (TextUtils.isEmpty(edit_item_title.text.toString().trim())) {
+                Toast.makeText(applicationContext, "Please enter title", Toast.LENGTH_SHORT).show()
+            } else {
+                updateTask(task)
+            }
+        }
+
+        edit_cancel_note.setOnClickListener {
+            btn_edit_layout.visibility = View.GONE
             home_layout.visibility = View.GONE
             home_layout.startAnimation(fade_out)
+            btn_edit_layout.startAnimation(slide_down)
+            hideKeyboard(this)
+        }
+
+
+        home_layout.setOnClickListener {
+            btn_edit_layout.visibility = View.GONE
+            btn_edit_layout.startAnimation(slide_down)
+            btn_add_layout.visibility = View.GONE
+            home_layout.visibility = View.GONE
             btn_add_layout.startAnimation(slide_down)
             hideKeyboard(this)
+
+            home_layout.startAnimation(fade_out)
 //            getTasks()
         }
 
@@ -194,71 +213,112 @@ class MainActivity : AppCompatActivity() {
             for (i in 0..taskList.lastIndex) {
                 for (j in 0..selectedTaskList.lastIndex) {
                     if (taskList.get(i) == selectedTaskList.get(j)) {
-                        deleteNote(taskList.get(i),i)
+                        deleteNote(taskList.get(i), i)
                     }
                 }
             }
             Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_LONG).show();
         }
+
+        update_btn.setOnClickListener {
+            val task= selectedTaskList.get(0)
+            Log.d("TASK_SELECTED",task.title+"  "+task.note)
+
+            edit_item_title.setText(task.title.toString())
+            edit_item_note.setText(task.note.toString())
+
+            if (btn_edit_layout.visibility == View.VISIBLE) {
+                home_layout.visibility = View.GONE
+                home_layout.startAnimation(fade_out)
+                btn_edit_layout.startAnimation(slide_down)
+                btn_edit_layout.visibility = View.GONE
+            } else {
+                home_layout.visibility = View.VISIBLE
+                home_layout.startAnimation(fade_in)
+                btn_edit_layout.visibility = View.VISIBLE
+                btn_edit_layout.startAnimation(slide_up)
+            }
+        }
     }
 
-    fun darkMode() {
-        mode = "Dark"
-        main_layout.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.dark_bg));
-        title_header.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
-        edt_search_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_white_1000))
-        edt_search_note.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.search_dark_hint))
-        search_layout.setBackgroundDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.search_et_bg_dark))
-        btn_search.setImageResource(R.drawable.ic_search_dark)
-        fab_add.setImageResource(R.drawable.ic_add_dark)
-        fab_add.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200));
-        fab_add.setRippleColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200));
-        btn_add_layout.setBackgroundResource(R.drawable.add_note_layout_dark)
-        edt_item_title.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
-        edt_item_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
-        edt_item_title.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
-        edt_item_note.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
-        btn_cancel_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
-        btn_add_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
+
+    override fun onResume() {
+        super.onResume()
+        getTasks()
     }
 
-    fun lightMode() {
-        mode = "Light"
-        main_layout.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.main_layout_bg));
-        title_header.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_blue_grey_800))
-        edt_search_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
-        edt_search_note.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.md_grey_500))
-        search_layout.setBackgroundDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.search_et_bg))
-        btn_search.setImageResource(R.drawable.ic_search)
-        fab_add.setImageResource(R.drawable.ic_add_black_24dp)
-        fab_add.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_500));
-        fab_add.setRippleColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200));
-        btn_add_layout.setBackgroundResource(R.drawable.add_note_layout)
-        edt_item_title.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
-        edt_item_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
-        edt_item_title.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.text_color_hint))
-        edt_item_note.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.text_color_hint))
-        btn_cancel_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
-        btn_add_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+    fun hideEditLayout() {
+        hideKeyboard(this)
+        if (btn_edit_layout.visibility == View.VISIBLE) {
+            btn_edit_layout.visibility = View.GONE
+            btn_edit_layout.startAnimation(slide_down)
+            home_layout.startAnimation(fade_out)
+            home_layout.visibility = View.GONE
+            edit_item_title.setText("")
+            edit_item_note.setText("")
+            update_btn.visibility=View.GONE
+            delete_btn.visibility=View.GONE
+            fab_add.show()
+            hideKeyboard(this)
+        }
+        getTasks();
     }
+
+
+    fun updateTask(task: Task) {
+        val title = edit_item_title.text.toString().trim()
+        val note = edit_item_note.text.toString().trim()
+        val date = currentDate
+
+
+
+        class UpdateTask : AsyncTask<Void, Void, Void>() {
+
+            override fun doInBackground(vararg params: Void?): Void? {
+                task.title = title
+                task.note = note
+                task.date = date
+                DatabaseClient.getInstance(applicationContext).appDatabase
+                        .taskDao()
+                        .update(task)
+                return null
+            }
+
+            override fun onPostExecute(result: Void?) {
+                super.onPostExecute(result)
+                Toast.makeText(applicationContext, "Updated", Toast.LENGTH_SHORT).show()
+                selectedTaskList.clear()
+                hideEditLayout()
+            }
+        }
+
+        val update = UpdateTask()
+        update.execute();
+    }
+
+
 
     fun swapAddDelete(size: Int) {
         if (size > 0) {
+            if (selectedTaskList.size == 1) {
+                update_btn.visibility = View.VISIBLE
+            } else {
+                update_btn.visibility = View.GONE
+            }
             disable()
             delete_btn.visibility = View.VISIBLE
         } else {
             enable()
+            update_btn.visibility = View.GONE
             delete_btn.visibility = View.GONE
         }
     }
 
     fun disable() {
-        fab_add.isEnabled = false
         fab_add.hide()
     }
 
     fun enable() {
-        fab_add.isEnabled = true
         fab_add.show()
     }
 
@@ -294,7 +354,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun deleteNote(task: Task,position:Int) {
+    fun deleteNote(task: Task, position: Int) {
         class DeleteTask : AsyncTask<Void, Void, Void>() {
 
             override fun doInBackground(vararg params: Void?): Void? {
@@ -365,7 +425,49 @@ class MainActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
+    fun darkMode() {
+        mode = "Dark"
+        main_layout.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.dark_bg));
+        title_header.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
+        edt_search_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_white_1000))
+        edt_search_note.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.search_dark_hint))
+        search_layout.setBackgroundDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.search_et_bg_dark))
+        btn_search.setImageResource(R.drawable.ic_search_dark)
+        fab_add.hide()
+        fab_add.setImageResource(R.drawable.ic_add_dark)
+        fab_add.show()
+        fab_add.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200));
+        fab_add.setRippleColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200));
+        btn_add_layout.setBackgroundResource(R.drawable.add_note_layout_dark)
+        edt_item_title.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
+        edt_item_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
+        edt_item_title.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
+        edt_item_note.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
+        btn_cancel_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
+        btn_add_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
+    }
 
+    fun lightMode() {
+        mode = "Light"
+        main_layout.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.main_layout_bg));
+        title_header.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_blue_grey_800))
+        edt_search_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+        edt_search_note.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.md_grey_500))
+        search_layout.setBackgroundDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.search_et_bg))
+        btn_search.setImageResource(R.drawable.ic_search)
+        fab_add.hide()
+        fab_add.setImageResource(R.drawable.ic_add_black_24dp)
+        fab_add.show()
+        fab_add.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_500));
+        fab_add.setRippleColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200));
+        btn_add_layout.setBackgroundResource(R.drawable.add_note_layout)
+        edt_item_title.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+        edt_item_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+        edt_item_title.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.text_color_hint))
+        edt_item_note.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.text_color_hint))
+        btn_cancel_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+        btn_add_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+    }
 }
 
 

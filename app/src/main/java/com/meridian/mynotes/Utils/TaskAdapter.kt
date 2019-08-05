@@ -29,10 +29,12 @@ class TaskAdapter(val tasks:List<Task>) : RecyclerView.Adapter<TaskAdapter.TaskV
 
 //        holder.loadAnim()
 
+
         val task = datasFiltered.get(position)
         holder.item_title.setText(task.title)
         holder.item_note.setText(task.note)
         holder.item_date.setText(task.date)
+//        holder.item_layout.setAnimation(AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fade_transition_animation))
 
         if(light_mode=="Dark"){
             holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.search_dark))

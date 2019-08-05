@@ -12,4 +12,16 @@
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
     </style>
 
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">#CC000000</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#FBFBFB
+        </item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#00FFFFFF
+        </item>
+    </style>
 </resources>
