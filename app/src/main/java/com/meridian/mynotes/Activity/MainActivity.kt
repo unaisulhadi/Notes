@@ -94,7 +94,11 @@ class MainActivity : AppCompatActivity() {
 
 
         selectedTaskList = ArrayList()
-
+        delete_btn.visibility = View.GONE
+        update_btn.visibility = View.GONE
+        share_btn.visibility=View.GONE
+        selectedTaskList.clear()
+        fab_add.show()
 
         swapAddDelete(selectedTaskList.size)
         rv_tasks.addOnItemTouchListener(RecyclerItemClickListener(applicationContext, rv_tasks, object : RecyclerItemClickListener.OnItemClickListener {
@@ -335,7 +339,7 @@ class MainActivity : AppCompatActivity() {
         share.type="text/plain"
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         share.putExtra(Intent.EXTRA_SUBJECT,task.title)
-        share.putExtra(Intent.EXTRA_TEXT,task.note)
+        share.putExtra(Intent.EXTRA_TEXT,task.title+"\n"+task.note)
         startActivity(Intent.createChooser(share,"Send note via"))
     }
 
@@ -348,6 +352,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        delete_btn.visibility = View.GONE
+        update_btn.visibility = View.GONE
+        share_btn.visibility=View.GONE
+        selectedTaskList.clear()
+        fab_add.show()
         getTasks()
     }
 
