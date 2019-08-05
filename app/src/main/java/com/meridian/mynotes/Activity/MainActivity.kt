@@ -103,6 +103,16 @@ class MainActivity : AppCompatActivity() {
                         swapAddDelete(selectedTaskList.size)
                     }
 //                    Toast.makeText(applicationContext,"SELECTED=="+selectedTaskList.toString(),Toast.LENGTH_SHORT).show()
+                }else{
+                    hideSelectedColor(view)
+                    val task = taskList.get(position)
+                    fab_add.hide()
+                    home_layout.visibility = View.VISIBLE
+                    home_layout.startAnimation(fade_in)
+                    btn_view_layout.visibility = View.VISIBLE
+                    btn_view_layout.startAnimation(slide_up)
+                    view_item_title.setText(task.title)
+                    view_item_note.setText(task.note)
                 }
             }
 
@@ -131,7 +141,14 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
+                selectedTaskList.clear()
+                delete_btn.visibility=View.GONE
+                update_btn.visibility=View.GONE
+                fab_add.hide()
                 adapter.getFilter().filter(s)
+                if(s.length==0){
+                    fab_add.show()
+                }
             }
         })
 
@@ -159,13 +176,15 @@ class MainActivity : AppCompatActivity() {
 
 
         home_layout.setOnClickListener {
+            btn_view_layout.visibility = View.GONE
+            btn_view_layout.startAnimation(slide_down)
             btn_edit_layout.visibility = View.GONE
             btn_edit_layout.startAnimation(slide_down)
             btn_add_layout.visibility = View.GONE
-            home_layout.visibility = View.GONE
             btn_add_layout.startAnimation(slide_down)
             hideKeyboard(this)
-
+            fab_add.show()
+            home_layout.visibility = View.GONE
             home_layout.startAnimation(fade_out)
 //            getTasks()
         }
@@ -184,7 +203,6 @@ class MainActivity : AppCompatActivity() {
                 home_layout.startAnimation(fade_out)
                 btn_add_layout.startAnimation(slide_down)
                 hideKeyboard(this)
-                getTasks()
             }
 
         }
@@ -242,9 +260,45 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun hideSelectedColor(view:View){
+        if(mode=="Light"){
+            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200))
+        }
+    }
+
+
     override fun onResume() {
         super.onResume()
         getTasks()
+    }
+
+    override fun onBackPressed() {
+//
+        if(btn_view_layout.visibility == View.VISIBLE){
+            btn_view_layout.visibility=View.GONE
+            btn_view_layout.startAnimation(slide_down)
+            home_layout.visibility=View.GONE
+            home_layout.startAnimation(fade_out)
+            fab_add.show()
+        }else if(btn_edit_layout.visibility == View.VISIBLE){
+            btn_edit_layout.visibility = View.GONE
+            btn_edit_layout.startAnimation(slide_down)
+            home_layout.visibility=View.GONE
+            home_layout.startAnimation(fade_out)
+        }else if(btn_add_layout.visibility==View.VISIBLE){
+            btn_add_layout.visibility = View.GONE
+            btn_add_layout.startAnimation(slide_down)
+            home_layout.visibility=View.GONE
+            home_layout.startAnimation(fade_out)
+        }else if(selectedTaskList.size>0){
+            selectedTaskList.clear()
+            delete_btn.visibility=View.GONE
+            update_btn.visibility= View.GONE
+            fab_add.show()
+            getTasks()
+        }else{
+            super.onBackPressed()
+        }
     }
 
     fun hideEditLayout() {
