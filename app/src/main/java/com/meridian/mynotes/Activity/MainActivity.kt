@@ -183,6 +183,9 @@ class MainActivity : AppCompatActivity() {
             btn_add_layout.visibility = View.GONE
             btn_add_layout.startAnimation(slide_down)
             hideKeyboard(this)
+            delete_btn.visibility=View.GONE
+            update_btn.visibility=View.GONE
+            selectedTaskList.clear()
             fab_add.show()
             home_layout.visibility = View.GONE
             home_layout.startAnimation(fade_out)
@@ -228,6 +231,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("TEST", "TEST")
 
         delete_btn.setOnClickListener {
+            edt_search_note.setText("")
             for (i in 0..taskList.lastIndex) {
                 for (j in 0..selectedTaskList.lastIndex) {
                     if (taskList.get(i) == selectedTaskList.get(j)) {
