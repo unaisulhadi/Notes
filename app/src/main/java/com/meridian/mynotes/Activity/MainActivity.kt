@@ -7,6 +7,9 @@ import android.view.animation.AnimationUtils
 
 import kotlinx.android.synthetic.main.activity_main.*
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.AsyncTask
 import android.support.v4.content.ContextCompat
@@ -43,6 +46,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var selectedTaskList: ArrayList<Task>
     lateinit var adapter: TaskAdapter
     lateinit var currentDate: String
+    lateinit var pref:SharedPreferences
+    lateinit var editor: SharedPreferences.Editor
 
     companion object Mode {
         internal var mode = "Light"
@@ -51,6 +56,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        pref=this.getSharedPreferences("MyPref",Context.MODE_PRIVATE)
+
+
+        mode = pref.getString("VIEW_MODE","Light") as String
+
+        if(mode=="Light"){
+            switch_mode.setChecked(false)
+            lightMode()
+        }else{
+            switch_mode.setChecked(true)
+            darkMode()
+        }
+
 
 
 //
@@ -87,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                         if (mode == "Light") {
                             view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_400))
                         } else {
-                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_800))
+                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_600))
                         }
 
                         selectedTaskList.add(taskList.get(position))
@@ -122,7 +141,7 @@ class MainActivity : AppCompatActivity() {
                     if (mode == "Light") {
                         view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_400))
                     } else {
-                        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_800))
+                        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_600))
                     }
                     selectedTaskList.add(taskList.get(position))
                     swapAddDelete(selectedTaskList.size)
@@ -130,6 +149,27 @@ class MainActivity : AppCompatActivity() {
 //                Toast.makeText(applicationContext,"SELECTED=="+selectedTaskList.toString(),Toast.LENGTH_SHORT).show()
             }
         }))
+
+
+
+        editor = pref.edit()
+        switch_mode.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked) {
+                editor.putString("VIEW_MODE","Dark")
+                val intent = Intent(applicationContext,MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION
+                startActivity(intent)
+                Toast.makeText(applicationContext,"Dark Mode",Toast.LENGTH_SHORT).show()
+                editor.commit()
+            }else{
+                editor.putString("VIEW_MODE","Light")
+                val intent = Intent(applicationContext,MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION
+                startActivity(intent)
+                Toast.makeText(applicationContext,"Light Mode",Toast.LENGTH_SHORT).show()
+                editor.commit()
+            }
+        }
 
         edt_search_note.addTextChangedListener(object : TextWatcher {
 
@@ -519,6 +559,23 @@ class MainActivity : AppCompatActivity() {
         edt_item_note.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
         btn_cancel_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
         btn_add_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
+
+        btn_edit_layout.setBackgroundResource(R.drawable.add_note_layout_dark)
+        edit_item_title.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
+        edit_item_title.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
+        edit_item_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
+        edit_item_note.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
+        edit_cancel_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
+        edit_add_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_text_hint))
+
+        btn_view_layout.setBackgroundResource(R.drawable.add_note_layout_dark)
+        view_item_title.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
+        view_item_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
+
+
+
+        update_btn.setImageResource(R.drawable.ic_pencil_outline_light)
+
     }
 
     fun lightMode() {
@@ -541,6 +598,20 @@ class MainActivity : AppCompatActivity() {
         edt_item_note.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.text_color_hint))
         btn_cancel_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
         btn_add_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+
+        btn_edit_layout.setBackgroundResource(R.drawable.add_note_layout)
+        edit_item_title.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+        edit_item_title.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.text_color_hint))
+        edit_item_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+        edit_item_note.setHintTextColor(ContextCompat.getColor(applicationContext, R.color.text_color_hint))
+        edit_cancel_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+        edit_add_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+
+        btn_view_layout.setBackgroundResource(R.drawable.add_note_layout)
+        view_item_title.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+        view_item_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
+
+        update_btn.setImageResource(R.drawable.ic_pencil_outline)
     }
 }
 

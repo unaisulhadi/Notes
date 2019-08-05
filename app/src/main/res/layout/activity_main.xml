@@ -33,27 +33,51 @@
                 android:textColor="@color/md_blue_grey_800"
                 android:textSize="@dimen/_22sdp" />
 
-            <ImageView
-                android:id="@+id/update_btn"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/_6sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/_35sdp"
-                android:src="@drawable/ic_pencil_outline"
-                android:visibility="gone"/>
+            <Switch
+                android:id="@+id/switch_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/SCBSwitch"
+                android:checked="true"
+                android:visibility="gone"
+                android:layout_centerInParent="true"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_32sdp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_alignParentEnd="true">
+                <ImageView
+                    android:id="@+id/share_btn"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="@dimen/_6sdp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:src="@drawable/ic_share"
+                    android:visibility="visible"/>
 
 
-            <ImageView
-                android:id="@+id/delete_btn"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/_6sdp"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_rubbish_bin"
-                android:visibility="gone"/>
+                <ImageView
+                    android:id="@+id/update_btn"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="@dimen/_6sdp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:src="@drawable/ic_pencil_outline"
+                    android:visibility="visible"/>
+
+
+                <ImageView
+                    android:id="@+id/delete_btn"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="@dimen/_6sdp"
+                    android:src="@drawable/ic_rubbish_bin"
+                    android:visibility="visible"/>
+            </LinearLayout>
+
+
 
         </RelativeLayout>
 
