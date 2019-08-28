@@ -1,5 +1,6 @@
 package com.meridian.mynotes.Utils
 
+import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,17 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Filter
-import com.meridian.mynotes.Activity.MainActivity
+import android.widget.Toast
+import com.meridian.mynotes.Activity.MainActivity.Mode
+import com.meridian.mynotes.Activity.MainActivity.Mode.delete_btn_
+import com.meridian.mynotes.Activity.MainActivity.Mode.fab_add_
+import com.meridian.mynotes.Activity.MainActivity.Mode.selectedTaskList
+import com.meridian.mynotes.Activity.MainActivity.Mode.share_btn_
+import com.meridian.mynotes.Activity.MainActivity.Mode.update_btn_
 import com.meridian.mynotes.Components.Task
 import com.meridian.mynotes.R
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.task_item.view.*
 
-class TaskAdapter(val tasks:List<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>(){
+class TaskAdapter(val context: Context, val tasks: List<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-    var light_mode = MainActivity.Mode.mode
-    var datasFiltered:List<Task> = tasks
+    var light_mode = Mode.mode
+    var datasFiltered: List<Task> = tasks
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): TaskViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.task_item,viewGroup,false)
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.task_item, viewGroup, false)
         return TaskViewHolder(view)
     }
 
@@ -34,17 +42,65 @@ class TaskAdapter(val tasks:List<Task>) : RecyclerView.Adapter<TaskAdapter.TaskV
         holder.item_title.setText(task.title)
         holder.item_note.setText(task.note)
         holder.item_date.setText(task.date)
+        holder.setIsRecyclable(false)
 //        holder.item_layout.setAnimation(AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fade_transition_animation))
 
-        if(light_mode=="Dark"){
-            holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.search_dark))
-            holder.item_title.setTextColor(ContextCompat.getColor(holder.itemView.context,R.color.dark_rv_title))
-            holder.item_note.setTextColor(ContextCompat.getColor(holder.itemView.context,R.color.md_grey_400))
+        if (light_mode == "Dark") {
+            holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.search_dark))
+            holder.item_title.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.dark_rv_title))
+            holder.item_note.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.md_grey_400))
 
+        } else {
+            holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.md_grey_200))
+            holder.item_title.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.md_black_1000))
+            holder.item_note.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.md_blue_grey_700))
+        }
+
+
+        if(task.isSelected){
+            holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_400))
         }else{
-            holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.md_grey_200))
-            holder.item_title.setTextColor(ContextCompat.getColor(holder.itemView.context,R.color.md_black_1000))
-            holder.item_note.setTextColor(ContextCompat.getColor(holder.itemView.context,R.color.md_blue_grey_700))
+            holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_200))
+        }
+
+
+        holder.item_layout.setOnClickListener {
+            if (selectedTaskList.size > 0) {
+                swapAddDelete(selectedTaskList.size)
+                if (!selectedTaskList.contains(datasFiltered.get(position))) {
+                    datasFiltered.get(position).isSelected = true
+
+                    holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_400))
+
+                    selectedTaskList.add(datasFiltered.get(position))
+                    swapAddDelete(selectedTaskList.size)
+                } else {
+                    datasFiltered.get(position).isSelected = false
+
+                    holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_200))
+
+                    selectedTaskList.remove(datasFiltered.get(position))
+                    swapAddDelete(selectedTaskList.size)
+                }
+                Toast.makeText(context, "SELECTED==" + selectedTaskList.toString(), Toast.LENGTH_SHORT).show()
+            } else {
+                holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_200))
+                val tasks = datasFiltered.get(position)
+                fab_add_.hide()
+                Toast.makeText(context, tasks.title, Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+        holder.item_layout.setOnLongClickListener {
+            if (!selectedTaskList.contains(datasFiltered.get(position))) {
+                datasFiltered.get(position).isSelected = true
+                holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_400))
+
+                selectedTaskList.add(datasFiltered.get(position))
+                swapAddDelete(selectedTaskList.size)
+            }
+            return@setOnLongClickListener true;
         }
 
     }
@@ -84,15 +140,48 @@ class TaskAdapter(val tasks:List<Task>) : RecyclerView.Adapter<TaskAdapter.TaskV
         }
     }
 
-    class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val item_title = itemView.task_item_title
         val item_note = itemView.task_item_note
         val item_date = itemView.task_item_date
         val item_layout = itemView.task_item_layout
-        fun loadAnim(){
+        fun loadAnim() {
 //            img_user.setAnimation(AnimationUtils.loadAnimation(itemView.context,R.anim.fade_transition_animation))
-            item_layout.setAnimation(AnimationUtils.loadAnimation(itemView.context,R.anim.fade_scale_animation))
+            item_layout.setAnimation(AnimationUtils.loadAnimation(itemView.context, R.anim.fade_scale_animation))
 
         }
+    }
+
+    fun swapAddDelete(size: Int) {
+        if (size > 0) {
+            if (selectedTaskList.size == 1) {
+                update_btn_.visibility = View.VISIBLE
+                share_btn_.visibility = View.VISIBLE
+            } else {
+                update_btn_.visibility = View.GONE
+                share_btn_.visibility = View.GONE
+            }
+            disable()
+            delete_btn_.visibility = View.VISIBLE
+        } else {
+            enable()
+            update_btn_.visibility = View.GONE
+            delete_btn_.visibility = View.GONE
+            share_btn_.visibility = View.GONE
+        }
+    }
+
+    fun disable() {
+        fab_add_.hide()
+    }
+
+    fun enable() {
+        fab_add_.show()
+    }
+
+    fun hideSelectedColor(view: View) {
+
+        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_200))
+
     }
 }

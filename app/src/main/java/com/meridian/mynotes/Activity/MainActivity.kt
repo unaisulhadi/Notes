@@ -10,8 +10,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.ColorStateList
 import android.os.AsyncTask
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
@@ -20,19 +20,17 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.Toast
 import com.meridian.mynotes.Components.DatabaseClient
 import com.meridian.mynotes.Components.Task
 import com.meridian.mynotes.R
 import com.meridian.mynotes.Utils.RecyclerItemClickListener
 import com.meridian.mynotes.Utils.TaskAdapter
-import kotlinx.android.synthetic.main.task_item.*
 import kotlinx.android.synthetic.main.task_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import android.view.animation.LayoutAnimationController
-import java.text.FieldPosition
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,33 +41,43 @@ class MainActivity : AppCompatActivity() {
     lateinit var fade_in: Animation
     lateinit var fade_out: Animation
     lateinit var taskList: List<Task>
-    lateinit var selectedTaskList: ArrayList<Task>
     lateinit var adapter: TaskAdapter
     lateinit var currentDate: String
-    lateinit var pref:SharedPreferences
+    lateinit var pref: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
+
 
     companion object Mode {
         internal var mode = "Light"
+        lateinit var selectedTaskList: ArrayList<Task>
+        lateinit var fab_add_: FloatingActionButton
+        lateinit var share_btn_: ImageView
+        lateinit var update_btn_: ImageView
+        lateinit var delete_btn_: ImageView
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        pref=this.getSharedPreferences("MyPref",Context.MODE_PRIVATE)
+        fab_add_ = fab_add
+        share_btn_ = share_btn
+        update_btn_ = update_btn
+        delete_btn_ = delete_btn
 
 
-        mode = pref.getString("VIEW_MODE","Light") as String
 
-        if(mode=="Light"){
+
+        pref = this.getSharedPreferences("MyPref", Context.MODE_PRIVATE)
+        mode = pref.getString("VIEW_MODE", "Light") as String
+
+        if (mode == "Light") {
             switch_mode.setChecked(false)
             lightMode()
-        }else{
+        } else {
             switch_mode.setChecked(true)
             darkMode()
         }
-
 
 
 //
@@ -96,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         selectedTaskList = ArrayList()
         delete_btn.visibility = View.GONE
         update_btn.visibility = View.GONE
-        share_btn.visibility=View.GONE
+        share_btn.visibility = View.GONE
         selectedTaskList.clear()
         fab_add.show()
 
@@ -106,25 +114,26 @@ class MainActivity : AppCompatActivity() {
                 if (selectedTaskList.size > 0) {
                     swapAddDelete(selectedTaskList.size)
 
-                    if (!selectedTaskList.contains(taskList.get(position))) {
-                        if (mode == "Light") {
-                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_400))
-                        } else {
-                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_600))
-                        }
-
-                        selectedTaskList.add(taskList.get(position))
-                        swapAddDelete(selectedTaskList.size)
-                    } else {
-
-                        if (mode == "Light") {
-                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200))
-                        } else {
-                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.search_dark))
-                        }
-                        selectedTaskList.remove(taskList.get(position))
-                        swapAddDelete(selectedTaskList.size)
-                    }
+//                    if (!selectedTaskList.contains(taskList.get(position))) {
+//                        taskList.get(position).isSelected = true
+//                        if (mode == "Light") {
+//                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_400))
+//                        } else {
+//                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_600))
+//                        }
+//
+//                        selectedTaskList.add(taskList.get(position))
+//                        swapAddDelete(selectedTaskList.size)
+//                    } else {
+//                        taskList.get(position).isSelected = false
+//                        if (mode == "Light") {
+//                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200))
+//                        } else {
+//                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.search_dark))
+//                        }
+//                        selectedTaskList.remove(taskList.get(position))
+//                        swapAddDelete(selectedTaskList.size)
+//                    }
 //                    Toast.makeText(applicationContext,"SELECTED=="+selectedTaskList.toString(),Toast.LENGTH_SHORT).show()
                 }else{
 //                    hideSelectedColor(view)
@@ -141,36 +150,36 @@ class MainActivity : AppCompatActivity() {
 
             override fun onItemLongClick(view: View, position: Int) {
 
-                if (!selectedTaskList.contains(taskList.get(position))) {
-                    if (mode == "Light") {
-                        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_400))
-                    } else {
-                        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_600))
-                    }
-                    selectedTaskList.add(taskList.get(position))
-                    swapAddDelete(selectedTaskList.size)
-                }
+//                if (!selectedTaskList.contains(taskList.get(position))) {
+//                    taskList.get(position).isSelected = true
+//                    if (mode == "Light") {
+//                        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_400))
+//                    } else {
+//                        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_600))
+//                    }
+//                    selectedTaskList.add(taskList.get(position))
+//                    swapAddDelete(selectedTaskList.size)
+//                }
 //                Toast.makeText(applicationContext,"SELECTED=="+selectedTaskList.toString(),Toast.LENGTH_SHORT).show()
             }
         }))
 
 
-
         editor = pref.edit()
         switch_mode.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(isChecked) {
-                editor.putString("VIEW_MODE","Dark")
-                val intent = Intent(applicationContext,MainActivity::class.java)
+            if (isChecked) {
+                editor.putString("VIEW_MODE", "Dark")
+                val intent = Intent(applicationContext, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION
                 startActivity(intent)
-                Toast.makeText(applicationContext,"Dark Mode",Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Dark Mode", Toast.LENGTH_SHORT).show()
                 editor.commit()
-            }else{
-                editor.putString("VIEW_MODE","Light")
-                val intent = Intent(applicationContext,MainActivity::class.java)
+            } else {
+                editor.putString("VIEW_MODE", "Light")
+                val intent = Intent(applicationContext, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION
                 startActivity(intent)
-                Toast.makeText(applicationContext,"Light Mode",Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Light Mode", Toast.LENGTH_SHORT).show()
                 editor.commit()
             }
         }
@@ -186,12 +195,12 @@ class MainActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 selectedTaskList.clear()
-                delete_btn.visibility=View.GONE
-                update_btn.visibility=View.GONE
-                share_btn.visibility=View.GONE
+                delete_btn.visibility = View.GONE
+                update_btn.visibility = View.GONE
+                share_btn.visibility = View.GONE
                 fab_add.hide()
                 adapter.getFilter().filter(s)
-                if(s.length==0){
+                if (s.length == 0) {
                     fab_add.show()
                 }
             }
@@ -200,7 +209,6 @@ class MainActivity : AppCompatActivity() {
         edit_add_note.setOnClickListener {
 
             val task = selectedTaskList.get(0)
-
 
 
             //            updateTask(selectedTaskList.get(0))
@@ -221,13 +229,13 @@ class MainActivity : AppCompatActivity() {
 
 
         home_layout.setOnClickListener {
-            if(btn_edit_layout.visibility==View.VISIBLE){
+            if (btn_edit_layout.visibility == View.VISIBLE) {
                 btn_edit_layout.visibility = View.GONE
                 home_layout.visibility = View.GONE
                 home_layout.startAnimation(fade_out)
                 btn_edit_layout.startAnimation(slide_down)
                 hideKeyboard(this)
-            }else if(btn_view_layout.visibility == View.VISIBLE){
+            } else if (btn_view_layout.visibility == View.VISIBLE) {
                 btn_view_layout.visibility = View.GONE
                 home_layout.visibility = View.GONE
                 home_layout.startAnimation(fade_out)
@@ -235,13 +243,12 @@ class MainActivity : AppCompatActivity() {
                 fab_add.show()
 
                 hideKeyboard(this)
-            }else
-            {
+            } else {
                 btn_add_layout.visibility = View.GONE
                 hideKeyboard(this)
                 delete_btn.visibility = View.GONE
                 update_btn.visibility = View.GONE
-                share_btn.visibility=View.GONE
+                share_btn.visibility = View.GONE
                 selectedTaskList.clear()
                 fab_add.show()
                 home_layout.visibility = View.GONE
@@ -291,7 +298,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("TEST", "TEST")
 
         delete_btn.setOnClickListener {
-//
+            //
             for (i in 0..taskList.lastIndex) {
                 for (j in 0..selectedTaskList.lastIndex) {
                     if (taskList.get(i) == selectedTaskList.get(j)) {
@@ -303,8 +310,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         update_btn.setOnClickListener {
-            val task= selectedTaskList.get(0)
-            Log.d("TASK_SELECTED",task.title+"  "+task.note)
+            val task = selectedTaskList.get(0)
+            Log.d("TASK_SELECTED", task.title + "  " + task.note)
 
             edit_item_title.setText(task.title.toString())
             edit_item_note.setText(task.note.toString())
@@ -327,24 +334,24 @@ class MainActivity : AppCompatActivity() {
             shareNote(selectedTaskList.get(0))
             delete_btn.visibility = View.GONE
             update_btn.visibility = View.GONE
-            share_btn.visibility=View.GONE
+            share_btn.visibility = View.GONE
             selectedTaskList.clear()
             fab_add.show()
 
         }
     }
 
-    fun shareNote(task:Task){
+    fun shareNote(task: Task) {
         val share = Intent(Intent.ACTION_SEND)
-        share.type="text/plain"
+        share.type = "text/plain"
         share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        share.putExtra(Intent.EXTRA_SUBJECT,task.title)
-        share.putExtra(Intent.EXTRA_TEXT,task.title+"\n"+task.note)
-        startActivity(Intent.createChooser(share,"Send note via"))
+        share.putExtra(Intent.EXTRA_SUBJECT, task.title)
+        share.putExtra(Intent.EXTRA_TEXT, task.title + "\n" + task.note)
+        startActivity(Intent.createChooser(share, "Send note via"))
     }
 
-    fun hideSelectedColor(view:View){
-        if(mode=="Light"){
+    fun hideSelectedColor(view: View) {
+        if (mode == "Light") {
             view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200))
         }
     }
@@ -354,7 +361,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         delete_btn.visibility = View.GONE
         update_btn.visibility = View.GONE
-        share_btn.visibility=View.GONE
+        share_btn.visibility = View.GONE
         selectedTaskList.clear()
         fab_add.show()
         getTasks()
@@ -362,30 +369,30 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
 //
-        if(btn_view_layout.visibility == View.VISIBLE){
-            btn_view_layout.visibility=View.GONE
+        if (btn_view_layout.visibility == View.VISIBLE) {
+            btn_view_layout.visibility = View.GONE
             btn_view_layout.startAnimation(slide_down)
-            home_layout.visibility=View.GONE
+            home_layout.visibility = View.GONE
             home_layout.startAnimation(fade_out)
             fab_add.show()
-        }else if(btn_edit_layout.visibility == View.VISIBLE){
+        } else if (btn_edit_layout.visibility == View.VISIBLE) {
             btn_edit_layout.visibility = View.GONE
             btn_edit_layout.startAnimation(slide_down)
-            home_layout.visibility=View.GONE
+            home_layout.visibility = View.GONE
             home_layout.startAnimation(fade_out)
-        }else if(btn_add_layout.visibility==View.VISIBLE){
+        } else if (btn_add_layout.visibility == View.VISIBLE) {
             btn_add_layout.visibility = View.GONE
             btn_add_layout.startAnimation(slide_down)
-            home_layout.visibility=View.GONE
+            home_layout.visibility = View.GONE
             home_layout.startAnimation(fade_out)
-        }else if(selectedTaskList.size>0){
+        } else if (selectedTaskList.size > 0) {
             selectedTaskList.clear()
-            delete_btn.visibility=View.GONE
-            update_btn.visibility= View.GONE
-            share_btn.visibility= View.GONE
+            delete_btn.visibility = View.GONE
+            update_btn.visibility = View.GONE
+            share_btn.visibility = View.GONE
             fab_add.show()
             getTasks()
-        }else{
+        } else {
             super.onBackPressed()
         }
     }
@@ -399,9 +406,9 @@ class MainActivity : AppCompatActivity() {
             home_layout.visibility = View.GONE
             edit_item_title.setText("")
             edit_item_note.setText("")
-            update_btn.visibility=View.GONE
-            delete_btn.visibility=View.GONE
-            share_btn.visibility=View.GONE
+            update_btn.visibility = View.GONE
+            delete_btn.visibility = View.GONE
+            share_btn.visibility = View.GONE
             fab_add.show()
             hideKeyboard(this)
         }
@@ -413,7 +420,6 @@ class MainActivity : AppCompatActivity() {
         val title = edit_item_title.text.toString().trim()
         val note = edit_item_note.text.toString().trim()
         val date = currentDate
-
 
 
         class UpdateTask : AsyncTask<Void, Void, Void>() {
@@ -442,15 +448,14 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     fun swapAddDelete(size: Int) {
         if (size > 0) {
             if (selectedTaskList.size == 1) {
                 update_btn.visibility = View.VISIBLE
-                share_btn.visibility=View.VISIBLE
+                share_btn.visibility = View.VISIBLE
             } else {
                 update_btn.visibility = View.GONE
-                share_btn.visibility=View.GONE
+                share_btn.visibility = View.GONE
             }
             disable()
             delete_btn.visibility = View.VISIBLE
@@ -458,7 +463,7 @@ class MainActivity : AppCompatActivity() {
             enable()
             update_btn.visibility = View.GONE
             delete_btn.visibility = View.GONE
-            share_btn.visibility=View.GONE
+            share_btn.visibility = View.GONE
         }
     }
 
@@ -517,7 +522,6 @@ class MainActivity : AppCompatActivity() {
                 edt_search_note.setText("")
                 selectedTaskList.clear()
                 swapAddDelete(selectedTaskList.size)
-                adapter.notifyItemRemoved(position)
                 getTasks()
             }
         }
@@ -540,7 +544,7 @@ class MainActivity : AppCompatActivity() {
             override fun onPostExecute(tasks: List<Task>) {
                 super.onPostExecute(tasks)
                 taskList = tasks;
-                adapter = TaskAdapter(taskList)
+                adapter = TaskAdapter(applicationContext, taskList)
                 rv_tasks.setAdapter(adapter)
             }
         }

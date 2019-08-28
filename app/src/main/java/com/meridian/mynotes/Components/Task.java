@@ -20,6 +20,16 @@ public class Task implements Serializable {
     @ColumnInfo(name = "date")
     private String date;
 
+    private boolean isSelected;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     public int getId() {
         return id;
     }
