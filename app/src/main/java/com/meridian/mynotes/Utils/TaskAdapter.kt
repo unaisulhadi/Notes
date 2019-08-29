@@ -35,7 +35,7 @@ class TaskAdapter(val context: Context, val tasks: List<Task>) : RecyclerView.Ad
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
 
-//        holder.loadAnim()
+        holder.loadAnim()
 
 
         val task = datasFiltered.get(position)

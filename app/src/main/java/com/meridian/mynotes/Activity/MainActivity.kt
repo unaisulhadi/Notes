@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity() {
 //        rv_tasks.layoutAnimation=animation
         getTasks();
 
+
         rotate_cw = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
         slide_up = AnimationUtils.loadAnimation(this, R.anim.slide_up)
         slide_down = AnimationUtils.loadAnimation(this, R.anim.slide_down)
@@ -100,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
+        edt_search_note.isCursorVisible = false
         selectedTaskList = ArrayList()
         delete_btn.visibility = View.GONE
         update_btn.visibility = View.GONE
@@ -339,6 +340,16 @@ class MainActivity : AppCompatActivity() {
             fab_add.show()
 
         }
+
+        main_layout_content.setOnClickListener{
+            if(edt_search_note.isCursorVisible){
+                edt_search_note.isCursorVisible = false
+            }
+        }
+
+        edt_search_note.setOnClickListener {
+            edt_search_note.isCursorVisible = true
+        }
     }
 
     fun shareNote(task: Task) {
@@ -369,6 +380,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
 //
+        edt_search_note.isCursorVisible = false
+
         if (btn_view_layout.visibility == View.VISIBLE) {
             btn_view_layout.visibility = View.GONE
             btn_view_layout.startAnimation(slide_down)
@@ -576,6 +589,7 @@ class MainActivity : AppCompatActivity() {
         if (view == null) {
             view = View(activity)
         }
+        edt_search_note.isCursorVisible = false
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
