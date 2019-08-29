@@ -82,12 +82,11 @@ class TaskAdapter(val context: Context, val tasks: List<Task>) : RecyclerView.Ad
                     selectedTaskList.remove(datasFiltered.get(position))
                     swapAddDelete(selectedTaskList.size)
                 }
-                Toast.makeText(context, "SELECTED==" + selectedTaskList.toString(), Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "SELECTED==" + selectedTaskList.toString(), Toast.LENGTH_SHORT).show()
             } else {
                 holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_200))
                 val tasks = datasFiltered.get(position)
                 fab_add_.hide()
-                Toast.makeText(context, tasks.title, Toast.LENGTH_SHORT).show()
             }
 
         }

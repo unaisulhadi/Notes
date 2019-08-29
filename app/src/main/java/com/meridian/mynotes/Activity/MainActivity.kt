@@ -428,6 +428,7 @@ class MainActivity : AppCompatActivity() {
                 task.title = title
                 task.note = note
                 task.date = date
+                task.isSelected = false
                 DatabaseClient.getInstance(applicationContext).appDatabase
                         .taskDao()
                         .update(task)
