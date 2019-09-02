@@ -35,7 +35,7 @@ class TaskAdapter(val context: Context, val tasks: List<Task>) : RecyclerView.Ad
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
 
-        holder.loadAnim()
+//        holder.loadAnim()
 
 
         val task = datasFiltered.get(position)
@@ -45,22 +45,27 @@ class TaskAdapter(val context: Context, val tasks: List<Task>) : RecyclerView.Ad
         holder.setIsRecyclable(false)
 //        holder.item_layout.setAnimation(AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fade_transition_animation))
 
-        if (light_mode == "Dark") {
-            holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.search_dark))
-            holder.item_title.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.dark_rv_title))
-            holder.item_note.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.md_grey_400))
 
+        if (task.isSelected) {
+            if (light_mode.equals("Light")) {
+                holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_400))
+                holder.item_title.setTextColor(ContextCompat.getColor(context, R.color.md_black_1000))
+                holder.item_note.setTextColor(ContextCompat.getColor(context, R.color.md_black_1000))
+            }else{
+                holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.item_layout_selected))
+                holder.item_title.setTextColor(ContextCompat.getColor(context, R.color.item_title_dark))
+                holder.item_note.setTextColor(ContextCompat.getColor(context, R.color.item_note_dark))
+            }
         } else {
-            holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.md_grey_200))
-            holder.item_title.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.md_black_1000))
-            holder.item_note.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.md_blue_grey_700))
-        }
-
-
-        if(task.isSelected){
-            holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_400))
-        }else{
-            holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_200))
+            if(light_mode.equals("Light")) {
+                holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_200))
+                holder.item_title.setTextColor(ContextCompat.getColor(context, R.color.md_black_1000))
+                holder.item_note.setTextColor(ContextCompat.getColor(context, R.color.md_black_1000))
+            }else{
+                holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.search_dark))
+                holder.item_title.setTextColor(ContextCompat.getColor(context, R.color.item_title_dark))
+                holder.item_note.setTextColor(ContextCompat.getColor(context, R.color.item_note_dark))
+            }
         }
 
 
@@ -70,21 +75,43 @@ class TaskAdapter(val context: Context, val tasks: List<Task>) : RecyclerView.Ad
                 if (!selectedTaskList.contains(datasFiltered.get(position))) {
                     datasFiltered.get(position).isSelected = true
 
-                    holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_400))
-
+                    if(light_mode.equals("Light")) {
+                        holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_400))
+                        holder.item_title.setTextColor(ContextCompat.getColor(context, R.color.md_black_1000))
+                        holder.item_note.setTextColor(ContextCompat.getColor(context, R.color.md_black_1000))
+                    }else{
+                        holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.item_layout_selected))
+                        holder.item_title.setTextColor(ContextCompat.getColor(context, R.color.item_title_dark))
+                        holder.item_note.setTextColor(ContextCompat.getColor(context, R.color.item_note_dark))
+                    }
                     selectedTaskList.add(datasFiltered.get(position))
                     swapAddDelete(selectedTaskList.size)
                 } else {
                     datasFiltered.get(position).isSelected = false
 
-                    holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_200))
-
+                    if(light_mode.equals("Light")) {
+                        holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_200))
+                        holder.item_title.setTextColor(ContextCompat.getColor(context, R.color.md_black_1000))
+                        holder.item_note.setTextColor(ContextCompat.getColor(context, R.color.md_black_1000))
+                    }else{
+                        holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.search_dark))
+                        holder.item_title.setTextColor(ContextCompat.getColor(context, R.color.item_title_dark))
+                        holder.item_note.setTextColor(ContextCompat.getColor(context, R.color.item_note_dark))
+                    }
                     selectedTaskList.remove(datasFiltered.get(position))
                     swapAddDelete(selectedTaskList.size)
                 }
 //                Toast.makeText(context, "SELECTED==" + selectedTaskList.toString(), Toast.LENGTH_SHORT).show()
             } else {
-                holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_200))
+                if(light_mode.equals("Light")) {
+                    holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_200))
+                    holder.item_title.setTextColor(ContextCompat.getColor(context, R.color.md_black_1000))
+                    holder.item_note.setTextColor(ContextCompat.getColor(context, R.color.md_black_1000))
+                }else{
+                    holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.search_dark))
+                    holder.item_title.setTextColor(ContextCompat.getColor(context, R.color.item_title_dark))
+                    holder.item_note.setTextColor(ContextCompat.getColor(context, R.color.item_note_dark))
+                }
                 val tasks = datasFiltered.get(position)
                 fab_add_.hide()
             }
@@ -94,8 +121,15 @@ class TaskAdapter(val context: Context, val tasks: List<Task>) : RecyclerView.Ad
         holder.item_layout.setOnLongClickListener {
             if (!selectedTaskList.contains(datasFiltered.get(position))) {
                 datasFiltered.get(position).isSelected = true
-                holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_400))
-
+                if(light_mode.equals("Light")) {
+                    holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_grey_400))
+                    holder.item_title.setTextColor(ContextCompat.getColor(context, R.color.md_black_1000))
+                    holder.item_note.setTextColor(ContextCompat.getColor(context, R.color.md_black_1000))
+                }else{
+                    holder.item_layout.setCardBackgroundColor(ContextCompat.getColor(context, R.color.item_layout_selected))
+                    holder.item_title.setTextColor(ContextCompat.getColor(context, R.color.item_title_dark))
+                    holder.item_note.setTextColor(ContextCompat.getColor(context, R.color.item_note_dark))
+                }
                 selectedTaskList.add(datasFiltered.get(position))
                 swapAddDelete(selectedTaskList.size)
             }

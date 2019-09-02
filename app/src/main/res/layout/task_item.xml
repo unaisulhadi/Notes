@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/_80sdp"
     android:layout_marginVertical="@dimen/_5sdp"
-    app:cardBackgroundColor="#EEEEEE"
+    app:cardBackgroundColor="@color/item_layout_bg"
     app:cardElevation="0dp"
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
@@ -23,7 +23,7 @@
             android:layout_toStartOf="@+id/task_item_date"
             android:fontFamily="@font/ps_bold"
             android:singleLine="true"
-            android:textColor="@color/md_black_1000" />
+            android:textColor="@color/item_title" />
         <TextView android:id="@+id/task_item_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         <TextView android:id="@+id/task_item_note"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@color/md_blue_grey_700"
+            android:textColor="@color/item_note"
             android:fontFamily="@font/ps_regular"
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_8sdp"

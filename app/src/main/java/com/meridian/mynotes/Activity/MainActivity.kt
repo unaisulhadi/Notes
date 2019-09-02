@@ -7,17 +7,18 @@ import android.view.animation.AnimationUtils
 
 import kotlinx.android.synthetic.main.activity_main.*
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.os.AsyncTask
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Window
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -41,14 +42,14 @@ class MainActivity : AppCompatActivity() {
     lateinit var fade_in: Animation
     lateinit var fade_out: Animation
     lateinit var taskList: List<Task>
-    lateinit var adapter: TaskAdapter
+    var adapter: TaskAdapter? = null
     lateinit var currentDate: String
     lateinit var pref: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
 
 
     companion object Mode {
-        internal var mode = "Light"
+        internal var mode = "Dark"
         lateinit var selectedTaskList: ArrayList<Task>
         lateinit var fab_add_: FloatingActionButton
         lateinit var share_btn_: ImageView
@@ -56,8 +57,18 @@ class MainActivity : AppCompatActivity() {
         lateinit var delete_btn_: ImageView
     }
 
+    private var myClipboard: ClipboardManager? = null
+    private var myClip: ClipData? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main)
 
         fab_add_ = fab_add
@@ -66,19 +77,20 @@ class MainActivity : AppCompatActivity() {
         delete_btn_ = delete_btn
 
 
-
-
+        myClipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?;
         pref = this.getSharedPreferences("MyPref", Context.MODE_PRIVATE)
         mode = pref.getString("VIEW_MODE", "Light") as String
 
         if (mode == "Light") {
             switch_mode.setChecked(false)
             lightMode()
+//            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         } else {
             switch_mode.setChecked(true)
             darkMode()
+//            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
-
+//
 
 //
         val sdf = SimpleDateFormat("dd-MM-yyyy")
@@ -89,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         val animation = AnimationUtils.loadLayoutAnimation(applicationContext, resId)
         rv_tasks.setHasFixedSize(true)
         rv_tasks.layoutManager = LinearLayoutManager(this)
-//        rv_tasks.layoutAnimation=animation
+        rv_tasks.layoutAnimation = animation
         getTasks();
 
 
@@ -112,32 +124,12 @@ class MainActivity : AppCompatActivity() {
         swapAddDelete(selectedTaskList.size)
         rv_tasks.addOnItemTouchListener(RecyclerItemClickListener(applicationContext, rv_tasks, object : RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
+                hideKeyboard(this@MainActivity)
                 if (selectedTaskList.size > 0) {
                     swapAddDelete(selectedTaskList.size)
 
-//                    if (!selectedTaskList.contains(taskList.get(position))) {
-//                        taskList.get(position).isSelected = true
-//                        if (mode == "Light") {
-//                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_400))
-//                        } else {
-//                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_600))
-//                        }
-//
-//                        selectedTaskList.add(taskList.get(position))
-//                        swapAddDelete(selectedTaskList.size)
-//                    } else {
-//                        taskList.get(position).isSelected = false
-//                        if (mode == "Light") {
-//                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200))
-//                        } else {
-//                            view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.search_dark))
-//                        }
-//                        selectedTaskList.remove(taskList.get(position))
-//                        swapAddDelete(selectedTaskList.size)
-//                    }
-//                    Toast.makeText(applicationContext,"SELECTED=="+selectedTaskList.toString(),Toast.LENGTH_SHORT).show()
-                }else{
-//                    hideSelectedColor(view)
+
+                } else {
                     val task = taskList.get(position)
                     fab_add.hide()
                     home_layout.visibility = View.VISIBLE
@@ -151,17 +143,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onItemLongClick(view: View, position: Int) {
 
-//                if (!selectedTaskList.contains(taskList.get(position))) {
-//                    taskList.get(position).isSelected = true
-//                    if (mode == "Light") {
-//                        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_400))
-//                    } else {
-//                        view.task_item_layout.setCardBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_600))
-//                    }
-//                    selectedTaskList.add(taskList.get(position))
-//                    swapAddDelete(selectedTaskList.size)
-//                }
-//                Toast.makeText(applicationContext,"SELECTED=="+selectedTaskList.toString(),Toast.LENGTH_SHORT).show()
+
             }
         }))
 
@@ -172,6 +154,7 @@ class MainActivity : AppCompatActivity() {
                 editor.putString("VIEW_MODE", "Dark")
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION
+//                delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 startActivity(intent)
                 Toast.makeText(applicationContext, "Dark Mode", Toast.LENGTH_SHORT).show()
                 editor.commit()
@@ -179,6 +162,28 @@ class MainActivity : AppCompatActivity() {
                 editor.putString("VIEW_MODE", "Light")
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION
+//                delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                startActivity(intent)
+                Toast.makeText(applicationContext, "Light Mode", Toast.LENGTH_SHORT).show()
+                editor.commit()
+            }
+        }
+
+
+        title_header.setOnClickListener {
+            if (mode.equals("Light")) {
+                editor.putString("VIEW_MODE", "Dark")
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION
+//                delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                startActivity(intent)
+                Toast.makeText(applicationContext, "Dark Mode", Toast.LENGTH_SHORT).show()
+                editor.commit()
+            } else {
+                editor.putString("VIEW_MODE", "Light")
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NO_ANIMATION
+//                delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 startActivity(intent)
                 Toast.makeText(applicationContext, "Light Mode", Toast.LENGTH_SHORT).show()
                 editor.commit()
@@ -200,7 +205,7 @@ class MainActivity : AppCompatActivity() {
                 update_btn.visibility = View.GONE
                 share_btn.visibility = View.GONE
                 fab_add.hide()
-                adapter.getFilter().filter(s)
+                adapter?.getFilter()?.filter(s)
                 if (s.length == 0) {
                     fab_add.show()
                 }
@@ -341,14 +346,23 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        main_layout_content.setOnClickListener{
-            if(edt_search_note.isCursorVisible){
+        main_layout_content.setOnClickListener {
+            if (edt_search_note.isCursorVisible) {
                 edt_search_note.isCursorVisible = false
             }
         }
 
         edt_search_note.setOnClickListener {
             edt_search_note.isCursorVisible = true
+        }
+
+        view_item_note.setOnLongClickListener {
+
+            myClip = ClipData.newPlainText("text", view_item_note.text);
+            myClipboard?.setPrimaryClip(myClip);
+
+            Toast.makeText(this, "Note Copied", Toast.LENGTH_SHORT).show();
+            return@setOnLongClickListener true
         }
     }
 
@@ -370,6 +384,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        edt_search_note.text.clear()
         delete_btn.visibility = View.GONE
         update_btn.visibility = View.GONE
         share_btn.visibility = View.GONE
@@ -593,7 +608,7 @@ class MainActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun darkMode() {
+    private fun darkMode() {
         mode = "Dark"
         main_layout.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.dark_bg));
         title_header.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
@@ -605,7 +620,6 @@ class MainActivity : AppCompatActivity() {
         fab_add.setImageResource(R.drawable.ic_add_dark)
         fab_add.show()
         fab_add.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200));
-        fab_add.setRippleColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200));
         btn_add_layout.setBackgroundResource(R.drawable.add_note_layout_dark)
         edt_item_title.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
         edt_item_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.dark_rv_title))
@@ -629,6 +643,7 @@ class MainActivity : AppCompatActivity() {
 
 
         update_btn.setImageResource(R.drawable.ic_pencil_outline_light)
+        share_btn.setImageResource(R.drawable.ic_share_light)
 
     }
 
@@ -644,7 +659,6 @@ class MainActivity : AppCompatActivity() {
         fab_add.setImageResource(R.drawable.ic_add_black_24dp)
         fab_add.show()
         fab_add.setBackgroundColor(ContextCompat.getColor(applicationContext, R.color.md_grey_500));
-        fab_add.setRippleColor(ContextCompat.getColor(applicationContext, R.color.md_grey_200));
         btn_add_layout.setBackgroundResource(R.drawable.add_note_layout)
         edt_item_title.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
         edt_item_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
@@ -666,6 +680,7 @@ class MainActivity : AppCompatActivity() {
         view_item_note.setTextColor(ContextCompat.getColor(applicationContext, R.color.md_black_1000))
 
         update_btn.setImageResource(R.drawable.ic_pencil_outline)
+        share_btn.setImageResource(R.drawable.ic_share)
     }
 }
 

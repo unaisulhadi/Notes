@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_layout_bg">#2C3539</color>
+    <color name="text_color_hint">#8D000000</color>
+    <color name="app_main_title">#D9D9D9</color>
+    <color name="search_et_bg_color">@color/add_layout_dark</color>
+    <color name="search_et_hint_color">@color/search_dark_hint</color>
+    <color name="fab_bg_tint">@color/md_grey_200</color>
+    <color name="fab_src_tint">@color/md_black_1000</color>
+    <color name="fab_ripple">@color/md_grey_700</color>
+    <color name="popup_layout_bg">@color/md_blue_grey_300</color>
+    <color name="input_color">@color/md_white_1000</color>
+    <color name="popup_btn_color">@color/md_white_1000</color>
+
+
+    <color name="item_layout_bg">@color/search_dark</color>
+    <color name="item_title">@color/dark_rv_title</color>
+    <color name="item_note">@color/md_blue_grey_400</color>
+</resources>
+
+

@@ -6,15 +6,42 @@
     <color name="app_primary_pressed">#58519f</color>
     <color name="app_ripple">#8c8cb7</color>
     <color name="search_dark">#454C52</color>
-    <color name="search_dark_hint">#2C3539</color>
+    <color name="search_dark_hint">@color/md_grey_400</color>
     <color name="dark_bg">#2C3539</color>
     <color name="dark_header">#D9D9D9</color>
     <color name="dark_rv_title">#B6BDC3</color>
     <color name="dark_rv_note">#2C3539</color>
     <color name="dark_text_hint">#80B6BDC3</color>
     <color name="add_layout_dark">#2C3539</color>
+
+
     <color name="main_layout_bg">#FBFBFB</color>
     <color name="text_color_hint">#8D000000</color>
+    <color name="app_main_title">@color/md_blue_grey_800</color>
+    <color name="search_et_bg_color">@color/md_grey_100</color>
+    <color name="search_et_hint_color">@color/md_grey_500</color>
+    <color name="fab_bg_tint">@color/md_grey_500</color>
+    <color name="fab_src_tint">@color/md_white_1000</color>
+    <color name="fab_ripple">@color/md_grey_700</color>
+    <color name="popup_layout_bg">#E0E0E0</color>
+    <color name="input_color">@color/md_black_1000</color>
+    <color name="popup_btn_color">@color/md_black_1000</color>
+    <color name="popup_bg_opaque">#66000000</color>
+
+
+    <color name="item_layout_bg">@color/md_grey_200</color>
+    <color name="item_title">@color/md_black_1000</color>
+    <color name="item_note">@color/md_blue_grey_700</color>
+
+    <color name="item_layout_selected">#5e6973</color>
+
+
+    <color name="item_layout_bg_dark">#454C52</color>
+    <color name="item_title_dark">#B6BDC3</color>
+    <color name="item_note_dark">#B6BDC3</color>
+    <color name="item_date_dark">@color/md_blue_grey_500</color>
+
+
 </resources>
 
 

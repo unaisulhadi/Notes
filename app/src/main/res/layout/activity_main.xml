@@ -19,7 +19,7 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/_18sdp"
         android:paddingHorizontal="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_15sdp">
+        android:paddingBottom="@dimen/_10sdp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                 android:fontFamily="@font/ps_bold"
                 android:text="Notes"
                 android:layout_centerVertical="true"
-                android:textColor="@color/md_blue_grey_800"
+                android:textColor="@color/app_main_title"
                 android:textSize="@dimen/_22sdp" />
 
             <Switch
@@ -39,7 +39,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/SCBSwitch"
-                android:checked="true"
                 android:visibility="gone"
                 android:layout_centerInParent="true"/>
 
@@ -97,8 +96,10 @@
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/ps_regular"
-                android:textColorHint="@color/md_grey_500"
+                android:textColorHint="@color/search_et_hint_color"
+                android:textColor="@color/input_color"
                 android:hint="Search"
+                android:textCursorDrawable="@drawable/cursor_drawable"
                 android:layout_toStartOf="@id/btn_search"
                 android:inputType="textCapSentences"
                 android:textSize="@dimen/_14sdp" />
@@ -131,16 +132,18 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        app:backgroundTint="@color/md_grey_500"
+        android:tint="@color/fab_src_tint"
+        app:backgroundTint="@color/fab_bg_tint"
+        app:rippleColor="@color/fab_ripple"
         android:src="@drawable/ic_add_black_24dp" />
-
     <View
         android:id="@+id/home_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#66000000"
+        android:background="@color/popup_bg_opaque"
         android:visibility="gone"
         />
+
 
     <RelativeLayout
         android:id="@+id/btn_add_layout"
@@ -160,7 +163,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:background="@android:color/transparent"
             android:fontFamily="@font/ps_regular"
-            android:textColor="@color/md_black_1000"
+            android:textColor="@color/input_color"
             android:textColorHint="@color/text_color_hint"
             android:hint="Title"
             android:inputType="textCapSentences"
@@ -174,7 +177,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:background="@android:color/transparent"
-            android:textColor="@color/md_black_1000"
+            android:textColor="@color/input_color"
             android:textColorHint="@color/text_color_hint"
             android:fontFamily="@font/ps_regular"
             android:gravity="start"
@@ -196,7 +199,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_weight="1"
-                android:textColor="@color/md_black_1000"
+                android:textColor="@color/popup_btn_color"
                 android:background="@android:color/transparent"
                 android:text="Cancel"
                 style="?android:attr/borderlessButtonStyle"/>
@@ -205,7 +208,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_weight="1"
-                android:textColor="@color/md_black_1000"
+                android:textColor="@color/popup_btn_color"
                 android:background="@android:color/transparent"
                 android:text="Add Note"
                 style="?android:attr/borderlessButtonStyle"/>
@@ -235,7 +238,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:background="@android:color/transparent"
             android:fontFamily="@font/ps_regular"
-            android:textColor="@color/md_black_1000"
+            android:textColor="@color/input_color"
             android:textColorHint="@color/text_color_hint"
             android:hint="Title"
             android:inputType="textCapSentences"
@@ -249,7 +252,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:background="@android:color/transparent"
-            android:textColor="@color/md_black_1000"
+            android:textColor="@color/input_color"
             android:textColorHint="@color/text_color_hint"
             android:fontFamily="@font/ps_regular"
             android:gravity="start"
@@ -271,7 +274,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_weight="1"
-                android:textColor="@color/md_black_1000"
+                android:textColor="@color/popup_btn_color"
                 android:background="@android:color/transparent"
                 android:text="Cancel"
                 style="?android:attr/borderlessButtonStyle"/>
@@ -280,7 +283,7 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_weight="1"
-                android:textColor="@color/md_black_1000"
+                android:textColor="@color/popup_btn_color"
                 android:background="@android:color/transparent"
                 android:text="Update"
                 style="?android:attr/borderlessButtonStyle"/>
@@ -306,7 +309,7 @@
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/ps_regular"
-            android:textColor="@color/md_black_1000"
+            android:textColor="@color/input_color"
             android:textColorHint="@color/text_color_hint"
             android:hint="Title"
             android:inputType="textCapSentences"
@@ -318,12 +321,13 @@
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_10sdp"
+            android:scrollbars="none"
             android:layout_below="@id/view_item_title">
             <TextView android:id="@+id/view_item_note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                android:textColor="@color/md_black_1000"
+                android:textColor="@color/input_color"
                 android:textColorHint="@color/text_color_hint"
                 android:fontFamily="@font/ps_regular"
                 android:gravity="start"
