@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/btn_view_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_200sdp"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_centerVertical="true"
+    android:background="@drawable/add_note_layout"
+    android:orientation="vertical"
+    android:visibility="gone"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView android:id="@+id/view_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:fontFamily="@font/ps_regular"
+        android:textColor="@color/input_color"
+        android:textColorHint="@color/text_color_hint"
+        android:hint="Title"
+        android:inputType="textCapSentences"
+        android:textSize="@dimen/_14sdp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:scrollbars="none"
+        android:layout_below="@id/view_item_title">
+        <TextView android:id="@+id/view_item_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textColor="@color/input_color"
+            android:textColorHint="@color/text_color_hint"
+            android:fontFamily="@font/ps_regular"
+            android:gravity="start"
+            android:hint="Note"
+            android:paddingTop="@dimen/_2sdp"
+            android:textSize="@dimen/_13sdp" />
+
+    </ScrollView>
+
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/btn_edit_note_ll"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/_30sdp"-->
+    <!--android:layout_marginHorizontal="@dimen/_5sdp"-->
+    <!--android:layout_alignParentEnd="true"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_marginBottom="@dimen/_5sdp"-->
+    <!--android:orientation="horizontal">-->
+    <!--<Button android:id="@+id/edit_cancel_note"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="@dimen/_30sdp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:textColor="@color/md_black_1000"-->
+    <!--android:background="@android:color/transparent"-->
+    <!--android:text="Cancel"-->
+    <!--style="?android:attr/borderlessButtonStyle"/>-->
+
+    <!--<Button android:id="@+id/edit_add_note"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="@dimen/_30sdp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:textColor="@color/md_black_1000"-->
+    <!--android:background="@android:color/transparent"-->
+    <!--android:text="Update"-->
+    <!--style="?android:attr/borderlessButtonStyle"/>-->
+    <!--</LinearLayout>-->
+</RelativeLayout>

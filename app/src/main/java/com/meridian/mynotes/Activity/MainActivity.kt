@@ -28,7 +28,10 @@ import com.meridian.mynotes.Components.Task
 import com.meridian.mynotes.R
 import com.meridian.mynotes.Utils.RecyclerItemClickListener
 import com.meridian.mynotes.Utils.TaskAdapter
+import kotlinx.android.synthetic.main.add_layout.*
+import kotlinx.android.synthetic.main.edit_layout.*
 import kotlinx.android.synthetic.main.task_item.view.*
+import kotlinx.android.synthetic.main.view_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
