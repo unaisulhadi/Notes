@@ -3,7 +3,7 @@
     <color name="main_layout_bg">#2C3539</color>
     <color name="text_color_hint">#8D000000</color>
     <color name="app_main_title">#D9D9D9</color>
-    <color name="search_et_bg_color">@color/add_layout_dark</color>
+    <color name="search_et_bg_color">@color/search_dark</color>
     <color name="search_et_hint_color">@color/search_dark_hint</color>
     <color name="fab_bg_tint">@color/md_grey_200</color>
     <color name="fab_src_tint">@color/md_black_1000</color>

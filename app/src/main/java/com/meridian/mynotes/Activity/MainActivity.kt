@@ -13,6 +13,7 @@ import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -86,12 +87,12 @@ class MainActivity : AppCompatActivity() {
 
         if (mode == "Light") {
             switch_mode.setChecked(false)
-            lightMode()
-//            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            //lightMode()
+            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         } else {
             switch_mode.setChecked(true)
-            darkMode()
-//            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            //darkMode()
+            delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
 //
 
@@ -103,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         val resId = R.anim.layout_animation_fall_down;
         val animation = AnimationUtils.loadLayoutAnimation(applicationContext, resId)
         rv_tasks.setHasFixedSize(true)
-        rv_tasks.layoutManager = LinearLayoutManager(this)
+        rv_tasks.layoutManager = LinearLayoutManager(this) as RecyclerView.LayoutManager?
         rv_tasks.layoutAnimation = animation
         getTasks();
 
