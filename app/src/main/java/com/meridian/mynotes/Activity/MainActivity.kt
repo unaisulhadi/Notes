@@ -18,8 +18,6 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Window
-import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -28,7 +26,7 @@ import com.meridian.mynotes.Components.DatabaseClient
 import com.meridian.mynotes.Components.Task
 import com.meridian.mynotes.R
 import com.meridian.mynotes.Utils.RecyclerItemClickListener
-import com.meridian.mynotes.Utils.TaskAdapter
+import com.meridian.mynotes.Adapter.TaskAdapter
 import kotlinx.android.synthetic.main.add_layout.*
 import kotlinx.android.synthetic.main.edit_layout.*
 import kotlinx.android.synthetic.main.task_item.view.*
@@ -174,7 +172,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        title_header.setOnClickListener {
+       /* title_header.setOnClickListener {
             if (mode.equals("Light")) {
                 editor.putString("VIEW_MODE", "Dark")
                 val intent = Intent(applicationContext, MainActivity::class.java)
@@ -192,7 +190,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Light Mode", Toast.LENGTH_SHORT).show()
                 editor.commit()
             }
-        }
+        }*/
 
         edt_search_note.addTextChangedListener(object : TextWatcher {
 
@@ -239,6 +237,7 @@ class MainActivity : AppCompatActivity() {
 
 
         home_layout.setOnClickListener {
+            hideKeyboard(this)
             if (btn_edit_layout.visibility == View.VISIBLE) {
                 btn_edit_layout.visibility = View.GONE
                 home_layout.visibility = View.GONE
@@ -368,6 +367,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "Note Copied", Toast.LENGTH_SHORT).show();
             return@setOnLongClickListener true
         }
+
     }
 
     fun shareNote(task: Task) {

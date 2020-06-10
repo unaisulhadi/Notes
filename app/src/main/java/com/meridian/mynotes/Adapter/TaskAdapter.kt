@@ -1,4 +1,4 @@
-package com.meridian.mynotes.Utils
+package com.meridian.mynotes.Adapter
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Filter
-import android.widget.Toast
 import com.meridian.mynotes.Activity.MainActivity.Mode
 import com.meridian.mynotes.Activity.MainActivity.Mode.delete_btn_
 import com.meridian.mynotes.Activity.MainActivity.Mode.fab_add_
@@ -17,7 +16,6 @@ import com.meridian.mynotes.Activity.MainActivity.Mode.share_btn_
 import com.meridian.mynotes.Activity.MainActivity.Mode.update_btn_
 import com.meridian.mynotes.Components.Task
 import com.meridian.mynotes.R
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.task_item.view.*
 
 class TaskAdapter(val context: Context, val tasks: List<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
@@ -152,7 +150,7 @@ class TaskAdapter(val context: Context, val tasks: List<Task>) : RecyclerView.Ad
                         // here we are looking for name or phone number match
                         if (row.title.toLowerCase().contains(charString.toLowerCase()) || row.title.contains(
                                         charSequence
-                                )
+                                ) || row.note.toLowerCase().contains(charString.toLowerCase()) || row.note.toLowerCase().contains(charSequence)
                         ) {
                             filteredList.add(row)
                         }
